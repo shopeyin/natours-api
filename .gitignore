@@ -1,0 +1,20 @@
+# Ignore all .log files
+*.log
+
+# Ignore node_modules directory
+node_modules/
+
+# Ignore all files in the dist directory
+dist/
+
+# Ignore any .env files
+.env
+config.env
+
+# Ignore any files in the temp directory, but keep a specific file
+temp/
+!temp/important-file.txt
+
+# Ignore everything in a directory named build except build/keep.txt
+build/*
+!build/keep.txt
