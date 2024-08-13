@@ -7,7 +7,6 @@ const app = require('./app');
 
 const DB = process.env.DATABASE;
 
-console.log(DB, 'HERE');
 
 
 mongoose
