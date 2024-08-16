@@ -36,23 +36,35 @@ exports.updateMe = catchAsync(async (request, response, next) => {
       )
     );
   }
- 
 
   // // 2) Filtered out unwanted fields names that are not allowed to be updated
   const filteredBody = filterObj(request.body, 'name', 'email');
   // if (req.file) filteredBody.photo = req.file.filename;
 
   // 3) Update user document
-  const updatedUser = await User.findByIdAndUpdate(request.user.id, filteredBody, {
-    new: true,
-    runValidators: true,
-  });
+  const updatedUser = await User.findByIdAndUpdate(
+    request.user.id,
+    filteredBody,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
 
   response.status(200).json({
     status: 'success',
     data: {
       user: updatedUser,
     },
+  });
+});
+
+exports.deleteMe = catchAsync(async (request, response, next) => {
+  await User.findByIdAndUpdate(request.user.id, { active: false });
+
+  response.status(204).json({
+    status: 'success',
+    data: null,
   });
 });
 

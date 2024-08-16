@@ -61,13 +61,18 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-userSchema.pre('save', function(next) {
+userSchema.pre('save', function (next) {
   if (!this.isModified('password') || this.isNew) return next();
 
   this.passwordChangedAt = Date.now() - 1000;
   next();
 });
 
+// QUERY MIDDLEWARE
+userSchema.pre(/^find/, function (next) {
+  this.find({ active: true });
+  next();
+});
 
 userSchema.methods.correctPassword = async function (
   candidatePassword,
@@ -99,12 +104,6 @@ userSchema.methods.createPasswordResetToken = function () {
     .digest('hex');
 
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
-
-  console.log(
-    { resetToken },
-    this.passwordResetToken,
-    this.passwordResetExpires
-  );
 
   return resetToken;
 };
